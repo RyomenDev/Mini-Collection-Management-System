@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { login as authLogin } from "../../store/authSlice";
+import { registerUser } from "../../api";
 import {
   RiUser3Line,
   RiLock2Line,
@@ -8,29 +7,25 @@ import {
   RiEyeLine,
 } from "react-icons/ri";
 import bgImage from "./auth-bg.png";
-import { loginUser } from "../../api";
 import { useNavigate } from "react-router-dom";
 
-const Login = () => {
+const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
-  const handleLogin = async (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
-    // console.log({email, password});
+    // console.log({ name,email, password });
+
     setMessage(""); // Reset message
     try {
-      const data = await loginUser(email, password);
-      localStorage.setItem("token", data.token);
-      //   console.log({data});
-
-      dispatch(authLogin(data));
-      setMessage("✅ Login successful");
-      setTimeout(() => navigate("/"), 1000); // Redirect after login
+      await registerUser(name, email, password);
+      setMessage("✅ Registration successful");
+      setTimeout(() => navigate("/login"), 1000); // Redirect to login after registration
     } catch (error) {
       setMessage(`❌ ${error}`);
     }
@@ -51,10 +46,25 @@ const Login = () => {
 
       <div className="relative bg-white/10 border-2 border-white mx-6 p-8 rounded-xl backdrop-blur-md sm:w-[400px] sm:p-12">
         <h1 className="text-center text-2xl font-medium text-gray-900 mb-8">
-          Login
+          Register
         </h1>
-        <form onSubmit={handleLogin} className="space-y-4">
+        <form onSubmit={handleRegister} className="space-y-4">
           <div className="space-y-6 mb-6">
+            {/* Name input */}
+            <div className="flex items-center border-b-2 border-white pb-2">
+              <RiUser3Line className="text-gray-900 text-xl" />
+              <div className="w-full relative">
+                <input
+                  type="text"
+                  placeholder="Name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                  className="w-full bg-transparent text-gray-900 px-2 py-2 placeholder-slate-700 focus:outline-none"
+                />
+              </div>
+            </div>
+
             {/* Email input */}
             <div className="flex items-center border-b-2 border-white pb-2">
               <RiUser3Line className="text-gray-900 text-xl" />
@@ -128,4 +138,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;

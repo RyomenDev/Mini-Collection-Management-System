@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  backend:
+    build: .
+    container_name: node_backend
+    ports:
+      - "5000:5000"
+    environment:
+      - PORT=5000
+      - JWT_SECRET="6aad3e1036582790"
+      - ELASTICSEARCH_URL="http://localhost:9200/"
+      - ELASTICSEARCH_USERNAME="elastic" 
+      - ELASTICSEARCH_PASSWORD="G4M5vD8pMAG+c1Au_wS2"
+    depends_on:
+      - elasticsearch
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.10.2
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+    ports:
+      - "5601:5601"
+      # - "9200:9200"

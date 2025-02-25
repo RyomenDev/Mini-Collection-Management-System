@@ -3,41 +3,51 @@ import { SideHeader, TopHeader, Footer } from "../components";
 import { useState } from "react";
 
 const Layout = () => {
-  const location = useLocation(); // Get the current location (path)
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // State for sidebar visibility
+  const location = useLocation();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  // Conditionally render the Header based on the current route
-  const showHeader = location.pathname !== "/login";
+  const showHeader = !["/login", "/register"].includes(location.pathname);
 
   return (
     <>
       {/* Top Header */}
-      <TopHeader />
+      {showHeader && <TopHeader />}
 
       <div className="flex flex-col lg:flex-row h-screen">
-        {/* Sidebar for Larger Screens */}
+        {/* Sidebar (Visible on Larger Screens) */}
         {showHeader && (
-          <div
-            className={`${
-              isSidebarOpen ? "absolute inset-0 bg-white z-50" : "hidden"
-            } lg:block lg:relative w-full lg:w-1/6 bg-gray-100 border-b-4 lg:border-b-0 lg:border-r-4 transition-all duration-300`}
-          >
-            <SideHeader />
-          </div>
-        )}
+          <>
+            {/* Mobile Sidebar Toggle Button */}
+            <button
+              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+              className="lg:hidden fixed top-6 left-0 bg-slate-600 text-white p-2 rounded-sm z-50 shadow-lg focus:outline-none"
+            >
+              {
+                //   isSidebarOpen ? (
+                <button className="text-white focus:outline-none">
+                  <span className="block w-6 h-1 bg-white mb-2"></span>
+                  <span className="block w-6 h-1 bg-white mb-2"></span>
+                  <span className="block w-6 h-1 bg-white"></span>
+                </button>
+                //   ) : null
+              }
+            </button>
 
-        {/* Sidebar Toggle Button for Small Screens */}
-        {showHeader && (
-          <button
-            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            className="lg:hidden fixed top-4 left-4 bg-blue-600 text-white p-2 rounded-full z-50 shadow-lg focus:outline-none"
-          >
-            {isSidebarOpen ? "Close" : "Menu"}
-          </button>
+            {/* Sidebar */}
+            <div
+              className={`${
+                isSidebarOpen
+                  ? "block bg-white z-50 fixed h-full w-2/4 md:w-1/3 sm:w-1/2"
+                  : "hidden"
+              } lg:block lg:relative lg:w-1/6 bg-gray-100 border-r-4 transition-all duration-300`}
+            >
+              <SideHeader />
+            </div>
+          </>
         )}
 
         {/* Main Content */}
-        <div className={`flex-1 bg-gray-100 overflow-auto`}>
+        <div className="flex-1 bg-gray-100 overflow-auto">
           <Outlet />
         </div>
       </div>

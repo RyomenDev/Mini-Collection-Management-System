@@ -6,6 +6,7 @@ build/
 dist/
 
 # Environment variables
+.crt
 .env
 .env.local
 .env.development.local

@@ -1,31 +1,45 @@
+import { useNavigate } from "react-router-dom";
+import homeBg from "./Home-bg.png";
+
 const Home = () => {
+  const navigate = useNavigate();
+
   return (
-    <div className=" bg-gray-100 flex items-center justify-center">
-      <div className="max-w-4xl mx-auto text-center p-6 bg-white shadow-lg rounded-lg">
+    <div
+      className="h-screen flex items-center justify-center bg-cover bg-center"
+      style={{ backgroundImage: `url(${homeBg})` }}
+    >
+      <div className="bg-white/20 backdrop-blur-md shadow-xl rounded-lg p-10 max-w-3xl w-full text-center border border-white/30">
         {/* Title Section */}
-        <h1 className="text-4xl font-bold text-gray-800 mb-4">
-          Welcome to Your App
+        <h1 className="text-5xl font-extrabold text-white mb-4 drop-shadow-md">
+          Welcome 
         </h1>
-        <p className="text-gray-600 text-lg mb-6">
-          This is your home page. Start building something amazing!
+        <p className="text-slate-800 text-lg mb-6">
+          Build something amazing with our powerful platform.
         </p>
 
-        {/* Call to Action */}
-        <div className="space-y-4 sm:space-y-0 sm:flex sm:space-x-4 justify-center">
-          <button className="px-6 py-3 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 focus:ring-2 focus:ring-blue-300">
+        {/* Call to Action Buttons */}
+        <div className="flex flex-col sm:flex-row justify-center gap-4">
+          <button
+            onClick={() => navigate("/get-started")}
+            className="px-6 py-3 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition font-semibold"
+          >
             Get Started
           </button>
-          <button className="px-6 py-3 bg-gray-200 text-gray-800 rounded-lg shadow hover:bg-gray-300 focus:ring-2 focus:ring-gray-300">
+          <button
+            onClick={() => navigate("/learn-more")}
+            className="px-6 py-3 bg-white/30 text-white rounded-lg shadow-md hover:bg-white/40 transition font-semibold border border-white/40"
+          >
             Learn More
           </button>
         </div>
 
-        {/* Decorative Section */}
-        <div className="mt-10">
+        {/* Decorative Image Section */}
+        <div className="mt-8">
           <img
             src="https://via.placeholder.com/600x300"
             alt="Placeholder"
-            className="rounded-lg shadow-lg w-full"
+            className="rounded-lg shadow-lg w-full border border-white/20"
           />
         </div>
       </div>
